@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react"
 import styled from "styled-components"
 import Btn from "./Btn"
 import close from "../assets/icon-cross.svg"
-import FormControl from "./FormInput"
+import FormControl, { InputWrap } from "./FormInput"
 import { FormLabel } from "./FormLine"
-import { AddFieldType } from "../types"
 
 interface IAddFields {
   btn: string
+  fields: any[]
   label?: string
-  setFields: React.Dispatch<React.SetStateAction<any>>
-  list: AddFieldType[]
+  append: any
+  remove: any
+  register: any
+  errors: any
 }
 
 // Styles
@@ -21,6 +22,7 @@ const Item = styled.div`
   align-items: center;
   display: flex;
   margin: 0 0 10px;
+  ${InputWrap} { flex: 1; }
 `
 const Delete = styled.button`
   background: url(${close}) center no-repeat;
@@ -35,44 +37,24 @@ const Delete = styled.button`
   -webkit-appearance: none;
 `
 
-const AddFields: React.FC<IAddFields> = ({ btn, label, setFields, list }) => {
-  const [values, setValues] = useState<AddFieldType[]>(list)
-
-  // https://www.react-hook-form.com/api/usefieldarray/
-
-  useEffect(() => {
-    setFields(values)
-  }, [values])
-
-  // addField
-  const addField = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setValues(prev => [...prev, { id: Date.now(), title: '' }])
-  }
-
-  // handler
-  const handler = (val: string, index: number) => {
-    let onChangeValue = [...values]
-    onChangeValue[index].title = val
-    setValues(onChangeValue)
-  }
-
-  // removeField
-  const removeField = (id: number) => {
-    const newArray = values.filter(el => el.id !== id)
-    setValues(newArray)
-  }
+const AddFields: React.FC<IAddFields> = ({ append, btn, errors, label, fields, register, remove }) => {
+  
 
   return (
     <Wrap>
       <FormLabel>{label}</FormLabel>
-      {values.map((el, index) => (
-        <Item key={el.id}>
-          <FormControl handler={(val) => handler(val, index)} value={el.title} />
-          <Delete type="button" onClick={() => removeField(el.id)} />
-        </Item>
-      ))}
-      <Btn color="secondary" expand title={btn} handler={(e) => addField(e)} />
+      <div>
+        {fields.map((item, index) => (
+          <Item key={item.id}>
+            <FormControl
+              valid={register(`columns.${index}.title`, { required: true })}
+              error={!!errors.columns?.[index]}
+            />
+            <Delete type="button" onClick={() => remove(index)} />
+          </Item>
+        ))}
+      </div>
+      <Btn color="secondary" expand title={btn} handler={() => append({ title: '' })} />
     </Wrap>
   )
 }

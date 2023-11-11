@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { AddFieldSubtasks } from "../../helpers/helpers"
 import { EditTaskPayloadType, SelectOptionType, TaskType } from "../../types"
-import AddFields from "../AddFields"
+import AddFields from "../AddFieldsOld"
 import Btn from "../Btn"
 import FormInput from "../FormInput"
 import FormLine from "../FormLine"

@@ -1,8 +1,8 @@
+import { useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import ModalBox from "../ModalBox"
 import { setNewBoard, setSidebar } from "../../store/appSlice"
-import { useState } from "react"
 import FormLine from "../FormLine"
 import FormInput from "../FormInput"
 import AddFields from "../AddFields"
@@ -22,7 +22,7 @@ const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
   const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       name: '',
-      columns: [{ title: '111' }, { title: '222' }, { title: '333' }]
+      columns: [] as any
     }
   })
   const { fields, append, remove } = useFieldArray({
@@ -51,16 +51,15 @@ const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
           />
         </FormLine>
 
-        <div>
-          {fields.map((item, index) => (
-            <li key={item.id}>
-              <input {...register(`columns.${index}.title`, { minLength: 3, required: true })} />
-              <button type="button" onClick={() => remove(index)}>Delete</button>
-              {errors.columns?.[index]?.title && <p>Required field</p>}
-            </li>
-          ))}
-        </div>
-        <button type="button" onClick={() => append({ title: '' })}>+ Add field</button>
+        <AddFields
+          btn="+ Add New Column"
+          fields={fields}
+          label="Columns"
+          append={append}
+          remove={remove}
+          errors={errors}
+          register={register}
+        />
 
         {/* <AddFields setFields={setCols} btn="+ Add New Column" label="Columns" list={[]} /> */}
         <Btn type="submit" title="Create New Board" expand />

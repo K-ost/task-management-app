@@ -6,12 +6,15 @@ interface IFormInput {
   valid?: any
   type?: 'text' | 'area'
   value?: string
-  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>
+  error?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>> | boolean
   placeholder?: string,
   name?: string
 }
 
 // Styles
+export const InputWrap = styled.div`
+  position: relative;
+`
 const InputStyles = `
   background: 0;
   border-radius: 4px;
@@ -44,12 +47,15 @@ export const Error = styled.div`
   color: var(--color-red);
   font-size: 11px;
   line-height: 14px;
-  margin: 6px 0 0;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  margin-top: -7px;
 `
 
 const FormInput: React.FC<IFormInput> = ({ handler, name, type = 'text', valid, value, error, placeholder }) => {
   return (
-    <>
+    <InputWrap>
       {type === 'text' &&
         <Input
           type={type}
@@ -70,8 +76,8 @@ const FormInput: React.FC<IFormInput> = ({ handler, name, type = 'text', valid, 
           {...valid}
         />
       }
-      {error && <Error>{error.toString()}</Error>}
-    </>
+      {error && <Error>Can't be empty</Error>}
+    </InputWrap>
   )
 }
 
