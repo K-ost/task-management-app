@@ -1,14 +1,14 @@
-import { useState } from "react"
-import { AddFieldColumns } from "../../helpers/helpers"
-import { AddFieldType, BoardType, ColumnType, EditBoardPayload } from "../../types"
-import AddFields from "../AddFieldsOld"
+import { BoardType, ColumnType, EditBoardPayload } from "../../types"
 import Btn from "../Btn"
 import FormInput from "../FormInput"
 import FormLine from "../FormLine"
 import ModalBox from "../ModalBox"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import { editBoardReducer } from "../../store/appSlice"
+import AddFields from "../AddFields"
+import { useEffect, useState } from "react"
+import { AddFieldColumns } from "../../helpers/helpers"
 
 interface IEditBoard {
   board: BoardType
@@ -18,46 +18,54 @@ interface IEditBoard {
 
 const EditBoard: React.FC<IEditBoard> = ({ board, editBoard, setEditBoard }) => {
   const dispatch = useAppDispatch()
-  const [columns, setColumns] = useState<AddFieldType[]>([])
 
-  // React hook form
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    // defaultValues: {
-    //   name: board?.name!
-    // }
+  // Form validate
+  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: {
+      name: 'dsdasda',
+      columns: board && AddFieldColumns(board.columns)
+    }
   })
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "columns"
+  })
+  
 
   // editBoardHandler
   const editBoardHandler = (data: any) => {
     const editedBoard: EditBoardPayload = {
-      cols: columns,
+      columns: data.columns,
       name: data.name,
       id: board.id
     }
-    dispatch(editBoardReducer(editedBoard))
-    setEditBoard(false)
+    console.log(editedBoard)
+    
+    // dispatch(editBoardReducer(editedBoard))
+    // setEditBoard(false)
   }
-  
-  
-  // Board Columns
-  let boardCols: ColumnType[] = []
-  if (board) {
-    boardCols = board.columns
-  }
+
 
   return (
     <ModalBox show={editBoard} close={() => setEditBoard(false)} title="Edit Board?">
       <form onSubmit={handleSubmit(editBoardHandler)}>
         <FormLine label="Board Name">
           <FormInput
-            value={board?.name!}
             valid={register('name', {required: 'Required field', minLength: 3, maxLength: 80 })}
             error={errors && errors.name?.message}
           />
         </FormLine>
-        <FormLine label="Board Columns">
-          <AddFields btn="+ Add New Column" list={AddFieldColumns(boardCols)} setFields={setColumns} />
-        </FormLine>
+        
+        <AddFields
+          btn="+ Add New Column"
+          fields={fields}
+          label="Board Columns"
+          append={append}
+          remove={remove}
+          errors={errors}
+          register={register}
+        />
+        
         <Btn type="submit" title="Save Changes" expand />
       </form>
     </ModalBox>
