@@ -1,4 +1,4 @@
-import { BoardType, ColumnType, EditBoardPayload } from "../../types"
+import { BoardType, EditBoardPayload } from "../../types"
 import Btn from "../Btn"
 import FormInput from "../FormInput"
 import FormLine from "../FormLine"
@@ -20,7 +20,7 @@ const EditBoard: React.FC<IEditBoard> = ({ board, editBoard, setEditBoard }) => 
   const dispatch = useAppDispatch()
 
   // Form validate
-  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+  const { register, control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       name: 'dsdasda',
       columns: board && AddFieldColumns(board.columns)
