@@ -50,7 +50,7 @@ export const appSlice = createSlice({
 
     // setNewBoard
     setNewBoard: (state, action: PayloadAction<NewBoardPayload>) => {
-      const newCols: ColumnType[] = action.payload.cols.map(el => {
+      const newCols: ColumnType[] = action.payload.columns.map(el => {
         return { id: el.id, name: el.title, tasks: [] }
       })
       const newBoard: BoardType = {
@@ -68,7 +68,7 @@ export const appSlice = createSlice({
     editBoardReducer: (state, action: PayloadAction<EditBoardPayload>) => {
       const currentBoard = state.boards.find(el => el.id === action.payload.id)
       
-      const output = action.payload.cols.map(edCol => {
+      const output = action.payload.columns.map(edCol => {
         let newCol = {} as ColumnType
         const existedCol = currentBoard?.columns ? !!currentBoard?.columns.find(el => el.id === edCol.id) : false
 

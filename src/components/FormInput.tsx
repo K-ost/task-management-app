@@ -35,7 +35,7 @@ const InputStyles = `
 `
 const Input = styled.input<{ $error: boolean }>`
   ${InputStyles}
-  border: 1px solid ${props => props.$error ? 'var(--color-red)' : 'rgba(130, 143, 163, 0.25)'};
+  border: 1px solid ${props => props.$error ? 'var(--color-red) !important' : 'rgba(130, 143, 163, 0.25)'};
 `
 const Area = styled.textarea<{ $error: boolean }>`
   ${InputStyles}

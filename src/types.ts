@@ -37,7 +37,7 @@ export type AddFieldType = {
 
 export interface NewBoardPayload {
   name: string
-  cols: AddFieldType[]
+  columns: AddFieldType[]
 }
 
 export interface NewColPayload {

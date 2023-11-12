@@ -54,7 +54,7 @@ const AddFields: React.FC<IAddFields> = ({ append, btn, errors, label, fields, r
           </Item>
         ))}
       </div>
-      <Btn color="secondary" expand title={btn} handler={() => append({ title: '' })} />
+      <Btn color="secondary" expand title={btn} handler={() => append({ title: '', id: Date.now() })} />
     </Wrap>
   )
 }

@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import ModalBox from "../ModalBox"
@@ -7,7 +6,7 @@ import FormLine from "../FormLine"
 import FormInput from "../FormInput"
 import AddFields from "../AddFields"
 import Btn from "../Btn"
-import { AddFieldType } from "../../types"
+import { NewBoardPayload } from "../../types"
 
 interface IAddBoardModal {
   modal: boolean
@@ -16,7 +15,6 @@ interface IAddBoardModal {
 
 const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
   const dispatch = useAppDispatch()
-  const [cols, setCols] = useState<AddFieldType[]>([])
 
   // Form validate
   const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
@@ -30,12 +28,12 @@ const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
     name: "columns"
   })
 
-  const createNewBoard = (data: any) =>{
-    // dispatch(setNewBoard({ cols, name: data.name }))
-    // setModal(false)
-    // dispatch(setSidebar(true))
-    // reset()
-    console.log(data)
+  // createNewBoard
+  const createNewBoard = (data: NewBoardPayload) => {
+    dispatch(setNewBoard(data))
+    setModal(false)
+    dispatch(setSidebar(true))
+    reset()
   }
   
   
@@ -61,7 +59,6 @@ const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
           register={register}
         />
 
-        {/* <AddFields setFields={setCols} btn="+ Add New Column" label="Columns" list={[]} /> */}
         <Btn type="submit" title="Create New Board" expand />
       </form>
     </ModalBox>
