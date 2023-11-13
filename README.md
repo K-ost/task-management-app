@@ -66,4 +66,7 @@ Working with React beautiful dnd was a new experience for me.
 ## Acknowledgments
 
 Hi, everyone!
-This app is for client side only. It's made with using redux and LocalStorage of browser as a data storage. Of course, it's quite obvious, if it was a full stack application, it would be developed in a completely different way. The implementation of this app is just my opinion and vision of how it can be done and nothing more. The first thing that came to my mind.
+
+This app is for client side only. It's made with using redux and LocalStorage of browser as a data storage. I had to change the data.json file a little bit, by adding ID's to boards, columns and tasks.
+
+Of course, it's quite obvious, if it was a full stack application, it would be developed in a completely different way. The implementation of this app is just my opinion and vision of how it can be done and nothing more. The first thing that came to my mind.
