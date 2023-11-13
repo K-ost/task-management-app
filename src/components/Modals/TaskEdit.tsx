@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { AddFieldSubtasks } from "../../helpers/helpers"
 import { EditTaskPayloadType, SelectOptionType, TaskType } from "../../types"
-import AddFields from "../AddFieldsOld"
 import Btn from "../Btn"
 import FormInput from "../FormInput"
 import FormLine from "../FormLine"
@@ -57,9 +56,9 @@ const TaskEdit: React.FC<ITaskEdit> = ({ boardId, columnId, columnName, editTask
         <FormLine label="Description">
           <FormInput value={task.description} type="area" valid={register('description')} />
         </FormLine>
-        <FormLine label="Subtasks">
+        {/* <FormLine label="Subtasks">
           <AddFields btn="+ Add New Subtask" list={AddFieldSubtasks(task.subtasks)} setFields={setSubtasks} />
-        </FormLine>
+        </FormLine> */}
         <FormLine label="Current Status">
           <SelectBox handler={setStatus} val={columnName} options={optionsList} />
         </FormLine>

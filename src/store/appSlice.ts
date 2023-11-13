@@ -187,7 +187,7 @@ export const appSlice = createSlice({
         title: action.payload.title,
         subtasks
       } as TaskType
-
+    
       const board = state.boards.find(el => el.id === action.payload.boardId)
       const column = board?.columns.find(el => nameToVal(el.name) === action.payload.status)
       column!.tasks = [...column!.tasks, newTask]

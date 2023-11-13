@@ -1,15 +1,15 @@
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import ModalBox from '../ModalBox'
 import { nameToVal } from '../../helpers/helpers'
 import { setNewTask } from '../../store/appSlice'
 import { useAppDispatch } from '../../store/hooks'
-import { AddFieldType, BoardType, NewTaskPayloadType, SelectOptionType } from '../../types'
+import { BoardType, NewTaskPayloadType, SelectOptionType } from '../../types'
 import FormLine from '../FormLine'
 import FormInput from '../FormInput'
-import AddFields from '../AddFieldsOld'
 import SelectBox from '../SelectBox'
 import Btn from '../Btn'
 import { useState } from 'react'
+import AddFields from '../AddFields'
 
 interface IAddTaskModal {
   addTaskWin: boolean
@@ -19,20 +19,27 @@ interface IAddTaskModal {
 }
 
 const AddTaskModal: React.FC<IAddTaskModal> = ({ addTaskWin, board, selectOptions, setAddTaskWin }) => {
-  const dispatch = useAppDispatch()
-  const [subtasks, setSubtasks] = useState<AddFieldType[]>([])
   const [statusTask, setStatusTask] = useState<string>('')
-  const { register, handleSubmit, formState: { errors }, reset } = useForm()
+  const dispatch = useAppDispatch()
+  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: {
+      title: '',
+      description: '',
+      columns: [] as any
+    }
+  })
+  const { fields, append, remove } = useFieldArray({ control, name: "columns" })
 
   // createNewTask
   const createNewTask = (data: any) => {
     const newTask = {
       description: data.description,
-      subtasks,
+      subtasks: data.columns,
       status: statusTask ? statusTask : nameToVal(board?.columns[0].name!),
       title: data.title,
       boardId: board?.id
     } as NewTaskPayloadType
+    
     dispatch(setNewTask(newTask))
     reset()
     setAddTaskWin(false)
@@ -48,6 +55,7 @@ const AddTaskModal: React.FC<IAddTaskModal> = ({ addTaskWin, board, selectOption
             error={errors && errors.title?.message!}
           />
         </FormLine>
+
         <FormLine label="Description">
           <FormInput
             placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
@@ -55,12 +63,21 @@ const AddTaskModal: React.FC<IAddTaskModal> = ({ addTaskWin, board, selectOption
             valid={register("description")}
           />
         </FormLine>
-        <FormLine label="Subtasks">
-          <AddFields btn="+ Add New Subtask" setFields={setSubtasks} list={[]} />
-        </FormLine>
+        
+        <AddFields
+          btn="+ Add New Subtask"
+          fields={fields}
+          label="Subtasks"
+          append={append}
+          remove={remove}
+          errors={errors}
+          register={register}
+        />
+
         <FormLine label="Status">
           <SelectBox options={selectOptions} handler={setStatusTask} />
         </FormLine>
+
         <Btn type="submit" title="Create Task" expand />
       </form>
     </ModalBox>
