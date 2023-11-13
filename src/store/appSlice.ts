@@ -115,13 +115,14 @@ export const appSlice = createSlice({
       const currentBoard = state.boards.find(el => el.slug === action.payload.board)
       
       if (source.droppableId !== destination.droppableId) {
-        
+
         const sourceColumn = action.payload.columns[source.droppableId]
         const destColumn = action.payload.columns[destination.droppableId]
         const sourceItems = [...sourceColumn.tasks]
         const destItems = [...destColumn.tasks]
         const [removed] = sourceItems.splice(source.index, 1)
-        destItems.splice(destination.index, 0, removed)
+        const newTask = {...removed, status: nameToVal(destColumn.name) }
+        destItems.splice(destination.index, 0, newTask)
 
         // State
         const sourceCol = currentBoard!.columns.find(col => col.id === sourceColumn.id)
@@ -152,7 +153,8 @@ export const appSlice = createSlice({
       const destColumn = board?.columns.find(el => nameToVal(el.name) === action.payload.destColumn)
 
       sourceColumn!.tasks = sourceColumn!.tasks.filter(el => el.id !== action.payload.task.id)
-      destColumn!.tasks = [...destColumn!.tasks, action.payload.task]
+      const newTask = {...action.payload.task, status: nameToVal(destColumn!.name)}
+      destColumn!.tasks = [...destColumn!.tasks, newTask]
       
       localStorage.setItem(LSName, JSON.stringify(state.boards))
     },
