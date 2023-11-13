@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AddFieldSubtasks } from "../../helpers/helpers"
 import { EditTaskPayloadType, SelectOptionType, TaskType } from "../../types"
 import Btn from "../Btn"
@@ -6,9 +6,10 @@ import FormInput from "../FormInput"
 import FormLine from "../FormLine"
 import ModalBox from "../ModalBox"
 import SelectBox from "../SelectBox"
-import { useForm } from "react-hook-form"
+import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import { editTaskReducer } from "../../store/appSlice"
+import AddFields from "../AddFields"
 
 interface ITaskEdit {
   boardId: number
@@ -21,12 +22,23 @@ interface ITaskEdit {
 }
 
 const TaskEdit: React.FC<ITaskEdit> = ({ boardId, columnId, columnName, editTaskPopup, optionsList, setEditTaskPopup, task }) => {
-  const [subtasks, setSubtasks] = useState<any>([])
   const [status, setStatus] = useState<string>(task.status)
   const dispatch = useAppDispatch()
 
+  // objValues
+  const objValues = {
+    title: task.title,
+    description: task.description,
+    columns: task && AddFieldSubtasks(task.subtasks)
+  }
+
   // Validation of form
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({ defaultValues: objValues })
+  const { fields, append, remove } = useFieldArray({ control, name: "columns" })
+
+  useEffect(() => {
+    reset(objValues)
+  }, [task])
 
   // editTaskHandler
   const editTaskHandler = (data: any) => {
@@ -36,7 +48,7 @@ const TaskEdit: React.FC<ITaskEdit> = ({ boardId, columnId, columnName, editTask
       description: data.description,
       id: task.id,
       status,
-      subtasks,
+      subtasks: data.columns,
       title: data.title
     } as EditTaskPayloadType
     dispatch(editTaskReducer(editedTask))
@@ -53,15 +65,25 @@ const TaskEdit: React.FC<ITaskEdit> = ({ boardId, columnId, columnName, editTask
             error={errors && errors.title?.message}
           />
         </FormLine>
+
         <FormLine label="Description">
           <FormInput value={task.description} type="area" valid={register('description')} />
         </FormLine>
-        {/* <FormLine label="Subtasks">
-          <AddFields btn="+ Add New Subtask" list={AddFieldSubtasks(task.subtasks)} setFields={setSubtasks} />
-        </FormLine> */}
+
+        <AddFields
+          btn="+ Add New Subtask"
+          fields={fields}
+          label="Subtasks"
+          append={append}
+          remove={remove}
+          errors={errors}
+          register={register}
+        />
+
         <FormLine label="Current Status">
           <SelectBox handler={setStatus} val={columnName} options={optionsList} />
         </FormLine>
+
         <Btn title="Save Changes" type="submit" expand />
       </form>
     </ModalBox>

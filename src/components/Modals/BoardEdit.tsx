@@ -7,7 +7,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import { editBoardReducer } from "../../store/appSlice"
 import AddFields from "../AddFields"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect } from "react"
 import { AddFieldColumns } from "../../helpers/helpers"
 
 interface IEditBoard {
