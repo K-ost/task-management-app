@@ -56,7 +56,7 @@ const EditBoard: React.FC<IEditBoard> = ({ board, editBoard, setEditBoard }) => 
       <form onSubmit={handleSubmit(editBoardHandler)}>
         <FormLine label="Board Name">
           <FormInput
-            valid={register('name', {required: 'Required field', minLength: 3, maxLength: 80 })}
+            valid={register('name', {required: 'Required field', maxLength: 80 })}
             error={errors && errors.name?.message}
           />
         </FormLine>
