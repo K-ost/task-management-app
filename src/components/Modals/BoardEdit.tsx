@@ -7,7 +7,7 @@ import { useFieldArray, useForm } from "react-hook-form"
 import { useAppDispatch } from "../../store/hooks"
 import { editBoardReducer } from "../../store/appSlice"
 import AddFields from "../AddFields"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { AddFieldColumns } from "../../helpers/helpers"
 
 interface IEditBoard {
@@ -19,17 +19,24 @@ interface IEditBoard {
 const EditBoard: React.FC<IEditBoard> = ({ board, editBoard, setEditBoard }) => {
   const dispatch = useAppDispatch()
 
+  // objValues
+  const objValues = {
+    name: board && board.name,
+    columns: board && AddFieldColumns(board.columns)
+  }
+
   // Form validate
-  const { register, control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      name: 'dsdasda',
-      columns: board && AddFieldColumns(board.columns)
-    }
+  const { register, control, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: objValues
   })
   const { fields, append, remove } = useFieldArray({
     control,
     name: "columns"
   })
+
+  useEffect(() => {
+    reset(objValues)
+  }, [board])
   
 
   // editBoardHandler
@@ -39,10 +46,8 @@ const EditBoard: React.FC<IEditBoard> = ({ board, editBoard, setEditBoard }) => 
       name: data.name,
       id: board.id
     }
-    console.log(editedBoard)
-    
-    // dispatch(editBoardReducer(editedBoard))
-    // setEditBoard(false)
+    dispatch(editBoardReducer(editedBoard))
+    setEditBoard(false)
   }
 
 
