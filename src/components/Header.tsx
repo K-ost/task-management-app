@@ -67,12 +67,13 @@ const HeadTitleMobile = styled.h2<{ $hide: boolean }>`
 
 const Header: React.FC<IHeader> = ({ children, title }) => {
   const sidebar = useAppSelector(state => state.app.sidebar)
+  const theme = useAppSelector(state => state.app.theme)
   const dispatch = useAppDispatch()
 
   return (
     <HeadBox>
       {!sidebar && <HeadSection className="HeadSection_logo">
-        <AsideLogo />
+        <AsideLogo $theme={theme} />
       </HeadSection>}
       <HeadSection className="HeadSection_full">
         <div className="mobile_logo"></div>
