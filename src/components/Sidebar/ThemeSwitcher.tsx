@@ -74,6 +74,7 @@ const ThemeSwitcher: React.FC = () => {
       <SwitcherBody>
         <SwitcherLabel>
           <Toggle
+            aria-label="Theme switcher"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => dispatch(setTheme(e.target.checked))}
             checked={theme}
           />

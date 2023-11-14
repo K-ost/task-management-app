@@ -28,7 +28,7 @@ function App() {
       </div>
       <div className="creditbox">
         Challenge by <b>Frontend Mentor</b>.
-        Coded by <a href="https://www.frontendmentor.io/profile/K-ost/" target="_blank"><b>K-ost</b></a>.
+        Coded by <a href="https://www.frontendmentor.io/profile/K-ost/" aria-label="Author" target="_blank"><b>K-ost</b></a>.
       </div>
     </div>
   )
