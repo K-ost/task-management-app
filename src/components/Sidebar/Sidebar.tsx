@@ -7,6 +7,8 @@ import SidebarToggle from "./SidebarToggle"
 import { mobileSize } from "../../helpers/helpers"
 import SidebarNav from "./SidebarNav"
 import BoardAdd from "../Modals/BoardAdd"
+import logoLight from "../../assets/logo-light.svg"
+import logoDark from "../../assets/logo-dark.svg"
 
 // Styles
 const Aside = styled.aside<{ $hide: boolean }>`
@@ -56,8 +58,8 @@ const AsideInner = styled.div`
     width: auto;
   }
 `
-export const AsideLogo = styled.div`
-  background: var(--logo) 0 0 no-repeat;
+export const AsideLogo = styled.div<{ $theme: boolean }>`
+  background: url(${props => props.$theme ? logoLight : logoDark}) 0 0 no-repeat;
   height: 27px;
   margin: 32px 0 54px 32px;
   width: 160px;
@@ -68,6 +70,7 @@ export const AsideLogo = styled.div`
 
 const Sidebar: React.FC = () => {
   const sidebar = useAppSelector(state => state.app.sidebar)
+  const theme = useAppSelector(state => state.app.theme)
   const dispatch = useAppDispatch()
   const [modal, setModal] = useState<boolean>(false)
 
@@ -75,7 +78,7 @@ const Sidebar: React.FC = () => {
     <>
       <Aside $hide={sidebar} className="backside">
         <AsideInner>
-          <AsideLogo />
+          <AsideLogo $theme={theme} />
           <SidebarNav setModal={setModal} />
           <ThemeSwitcher />
         </AsideInner>
