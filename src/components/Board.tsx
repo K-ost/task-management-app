@@ -67,9 +67,9 @@ const Board: React.FC<IBoard> = ({ slug }) => {
           <DragDropContext onDragEnd={result => dispatch(onDragEnd({ result, board: board?.slug!, columns: board?.columns! }))}>
             {board?.columns.map((column, index) => (
               <div className="column" key={column.id}>
-                <h4 className="column-header">
+                <div className="column-header">
                   {column.name} ({column.tasks.length})
-                </h4>
+                </div>
                 <Droppable droppableId={index.toString()}>
                   {(provided, snapshot) => (
                     <ColumnDragArea

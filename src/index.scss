@@ -73,7 +73,7 @@ p { margin: 0 0 var(--gap); }
 
 a { color: var((--color-title)); }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, .column-header {
   font-weight: 700;
   margin: 0 0 20px;
 }
@@ -89,7 +89,7 @@ h3 {
   font-size: 15px;
   line-height: 19px;
 }
-h4 {
+h4, .column-header {
   font-size: 12px;
   line-height: 15px;
   letter-spacing: 2.4px;
@@ -138,9 +138,9 @@ h4 {
   min-width: var(--column);
   max-width: var(--column);
   margin: 0 var(--gap) 0 0;
-  &:nth-child(1) h4::before { background-color: #49C4E5; }
-  &:nth-child(2) h4::before { background-color: #8471F2; }
-  &:nth-child(3) h4::before { background-color: #67E2AE; }
+  &:nth-child(1) &-header::before { background-color: #49C4E5; }
+  &:nth-child(2) &-header::before { background-color: #8471F2; }
+  &:nth-child(3) &-header::before { background-color: #67E2AE; }
 
   &-droppable {
     flex: 1;
