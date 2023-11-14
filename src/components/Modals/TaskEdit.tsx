@@ -61,7 +61,7 @@ const TaskEdit: React.FC<ITaskEdit> = ({ boardId, columnId, columnName, editTask
         <FormLine label="Title">
           <FormInput
             value={task.title}
-            valid={register('title', {required: 'Required field', maxLength: 80 })}
+            valid={register('title', {required: 'Required field', minLength: { value: 3, message: 'Min' }, maxLength: 80 })}
             error={errors && errors.title?.message}
           />
         </FormLine>

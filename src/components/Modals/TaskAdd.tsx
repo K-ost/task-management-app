@@ -51,7 +51,7 @@ const AddTaskModal: React.FC<IAddTaskModal> = ({ addTaskWin, board, selectOption
         <FormLine label="Title">
           <FormInput
             placeholder="e.g. Take coffee break"
-            valid={register("title", {required: 'Required field', maxLength: 80})}
+            valid={register("title", {required: 'Required field', minLength: { value: 3, message: 'Min' }, maxLength: 80})}
             error={errors && errors.title?.message!}
           />
         </FormLine>

@@ -44,7 +44,7 @@ const AddBoardModal: React.FC<IAddBoardModal> = ({ modal, setModal }) => {
         <FormLine label="Name">
           <FormInput
             placeholder="e.g. Web Design"
-            valid={register("name", {required: 'Required field', maxLength: 80})}
+            valid={register("name", {required: 'Required field', minLength: { value: 3, message: 'Min' }, maxLength: 80})}
             error={errors && errors.name?.message!}
           />
         </FormLine>

@@ -31,7 +31,7 @@ const ColumnAdd: React.FC<IColumnAdd> = ({ boardId, close, show }) => {
         <FormLine label="Name">
           <FormInput
             placeholder="Column Name"
-            valid={register("name", {required: 'Required field', maxLength: 80})}
+            valid={register("name", {required: 'Required field', minLength: { value: 3, message: 'Min' }, maxLength: 80})}
             error={errors && errors.name?.message!}
           />
         </FormLine>

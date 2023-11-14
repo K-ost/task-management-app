@@ -47,7 +47,7 @@ const AddFields: React.FC<IAddFields> = ({ append, btn, errors, label, fields, r
         {fields.map((item, index) => (
           <Item key={item.id}>
             <FormControl
-              valid={register(`columns.${index}.title`, { required: true })}
+              valid={register(`columns.${index}.title`, { required: true, minLength: { value: 3, message: 'Min' } })}
               error={!!errors.columns?.[index]}
             />
             <Delete type="button" onClick={() => remove(index)} />
