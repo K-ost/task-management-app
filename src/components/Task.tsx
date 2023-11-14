@@ -31,7 +31,10 @@ const TaskItem = styled.div<{ $over: boolean}>`
   padding: 23px 16px;
   &:hover h3 { color: var(--color-purple); }
 `
-const TaskItemTitle = styled.h3`
+const TaskItemTitle = styled.div`
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 19px;
   margin: 0 0 8px;
   transition: var(--animate);
 `
