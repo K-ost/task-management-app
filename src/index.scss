@@ -234,6 +234,26 @@ h4 {
 }
 
 
+/* creditbox */
+.creditbox {
+  background: var(--color-main);
+  border-radius: 6px;
+  box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.05);
+  color: var(--color-title);
+  padding: 6px 12px;
+  font-size: 11px;
+  line-height: 14px;
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  opacity: 0.85;
+  transform: translateX(-50%);
+  a {
+    color: var(--color-purple);
+  }
+}
+
+
 /* Responsive */
 @media screen and (max-width: 1020px) {
   :root {
