@@ -486,7 +486,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   box-shadow: 0px 4px 6px 0px rgba(0,0,0,0.05);
   padding: 23px 16px;
   &:hover h3 { color: var(--color-purple); }
-`,A6=le.h3`
+`,A6=le.div`
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 19px;
   margin: 0 0 8px;
   transition: var(--animate);
 `,R6=le.div`
