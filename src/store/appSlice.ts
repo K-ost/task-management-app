@@ -20,7 +20,7 @@ import { nameToVal } from "../helpers/helpers";
 const LSName = "boards";
 
 // Define a type for the slice state
-interface appState {
+export interface appState {
   boards: BoardType[];
   loading: boolean;
   sidebar: boolean;
