@@ -1,18 +1,18 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAppSelector } from "../store/hooks"
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../store/hooks";
 
 const Home: React.FC = () => {
-  const boards = useAppSelector(state => state.app.boards)
-  const navigate = useNavigate()
+  const boards = useAppSelector((state) => state.app.boards);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (boards.length) {
-      navigate(`/${boards[0].slug}`)
+      navigate(`/${boards[0].slug}`);
     }
-  }, [boards])
+  }, [boards, navigate]);
 
-  return null
-}
+  return null;
+};
 
-export default Home
+export default Home;

@@ -78,9 +78,7 @@ export const appSlice = createSlice({
 
     // editBoardReducer
     editBoardReducer: (state, action: PayloadAction<EditBoardPayload>) => {
-      const currentBoard = state.boards.find(
-        (el) => el.id === action.payload.id
-      );
+      const currentBoard = state.boards.find((el) => el.id === action.payload.id);
 
       const output = action.payload.columns.map((edCol) => {
         let newCol = {} as ColumnType;
@@ -119,15 +117,17 @@ export const appSlice = createSlice({
 
     // setColumn
     setColumn: (state, action: PayloadAction<NewColPayload>) => {
-      const currentBoard = state.boards.find(
-        (el) => el.id === action.payload.boardId
-      );
       const newColumn: ColumnType = {
         id: Date.now(),
         name: action.payload.name,
         tasks: [],
       };
-      currentBoard!.columns = [...currentBoard?.columns!, newColumn];
+      state.boards = state.boards.map((board) => {
+        if (board.id === action.payload.boardId) {
+          return { ...board, columns: [...board.columns, newColumn] };
+        }
+        return board;
+      });
       localStorage.setItem("boards", JSON.stringify(state.boards));
     },
 
@@ -138,9 +138,7 @@ export const appSlice = createSlice({
 
       const source = result.source;
       const destination = result.destination;
-      const currentBoard = state.boards.find(
-        (el) => el.slug === action.payload.board
-      );
+      const currentBoard = state.boards.find((el) => el.slug === action.payload.board);
 
       if (source.droppableId !== destination.droppableId) {
         const sourceColumn = action.payload.columns[source.droppableId];
@@ -152,12 +150,8 @@ export const appSlice = createSlice({
         destItems.splice(destination.index, 0, newTask);
 
         // State
-        const sourceCol = currentBoard!.columns.find(
-          (col) => col.id === sourceColumn.id
-        );
-        const destCol = currentBoard!.columns.find(
-          (col) => col.id === destColumn.id
-        );
+        const sourceCol = currentBoard!.columns.find((col) => col.id === sourceColumn.id);
+        const destCol = currentBoard!.columns.find((col) => col.id === destColumn.id);
         sourceCol!.tasks = sourceItems;
         destCol!.tasks = destItems;
       } else {
@@ -167,9 +161,7 @@ export const appSlice = createSlice({
         copiedItemsState.splice(destination.index, 0, removedState);
 
         // State
-        const currentCol = currentBoard!.columns.find(
-          (col) => col.id === columnState.id
-        );
+        const currentCol = currentBoard!.columns.find((col) => col.id === columnState.id);
         currentCol!.tasks = copiedItemsState;
       }
 
@@ -180,14 +172,14 @@ export const appSlice = createSlice({
     setTaskColumn: (state, action: PayloadAction<ChangeColPayload>) => {
       const board = state.boards.find((el) => el.id === action.payload.boardId);
       const sourceColumn = board?.columns.find(
-        (el) => el.id === action.payload.sourceColumn
+        (el) => el.id === action.payload.sourceColumn,
       );
       const destColumn = board?.columns.find(
-        (el) => nameToVal(el.name) === action.payload.destColumn
+        (el) => nameToVal(el.name) === action.payload.destColumn,
       );
 
       sourceColumn!.tasks = sourceColumn!.tasks.filter(
-        (el) => el.id !== action.payload.task.id
+        (el) => el.id !== action.payload.task.id,
       );
       const newTask = {
         ...action.payload.task,
@@ -201,13 +193,9 @@ export const appSlice = createSlice({
     // setSubTaskStatus
     setSubTaskStatus: (state, action: PayloadAction<SubtaskPayload>) => {
       const board = state.boards.find((el) => el.id === action.payload.boardId);
-      const column = board?.columns.find(
-        (el) => el.id === action.payload.columnId
-      );
+      const column = board?.columns.find((el) => el.id === action.payload.columnId);
       const task = column?.tasks.find((el) => el.id === action.payload.taskId);
-      const subtask = task?.subtasks.find(
-        (el) => el.title === action.payload.subtask
-      );
+      const subtask = task?.subtasks.find((el) => el.title === action.payload.subtask);
       subtask!.isCompleted = action.payload.checked;
       localStorage.setItem(LSName, JSON.stringify(state.boards));
     },
@@ -215,12 +203,8 @@ export const appSlice = createSlice({
     // deleteTaskReducer
     deleteTaskReducer: (state, action: PayloadAction<DeleteTaskPayload>) => {
       const board = state.boards.find((el) => el.id === action.payload.boardId);
-      const column = board?.columns.find(
-        (el) => el.id === action.payload.columnId
-      );
-      column!.tasks = column!.tasks.filter(
-        (el) => el.id !== action.payload.taskId
-      );
+      const column = board?.columns.find((el) => el.id === action.payload.columnId);
+      column!.tasks = column!.tasks.filter((el) => el.id !== action.payload.taskId);
       localStorage.setItem(LSName, JSON.stringify(state.boards));
     },
 
@@ -239,7 +223,7 @@ export const appSlice = createSlice({
 
       const board = state.boards.find((el) => el.id === action.payload.boardId);
       const column = board?.columns.find(
-        (el) => nameToVal(el.name) === action.payload.status
+        (el) => nameToVal(el.name) === action.payload.status,
       );
       column!.tasks = [...column!.tasks, newTask];
       localStorage.setItem(LSName, JSON.stringify(state.boards));
@@ -247,18 +231,14 @@ export const appSlice = createSlice({
 
     // editTaskReducer
     editTaskReducer: (state, action: PayloadAction<EditTaskPayloadType>) => {
-      const currentBoard = state.boards.find(
-        (el) => el.id === action.payload.boardId
-      );
+      const currentBoard = state.boards.find((el) => el.id === action.payload.boardId);
       const currentColumn = currentBoard?.columns.find(
-        (el) => el.id === action.payload.columnId
+        (el) => el.id === action.payload.columnId,
       );
       const currentDestColumn = currentBoard?.columns.find(
-        (el) => nameToVal(el.name) === action.payload.status
+        (el) => nameToVal(el.name) === action.payload.status,
       );
-      const currentTask = currentColumn?.tasks.find(
-        (el) => el.id === action.payload.id
-      );
+      const currentTask = currentColumn?.tasks.find((el) => el.id === action.payload.id);
 
       currentTask!.title = action.payload.title;
       currentTask!.description = action.payload.description;
@@ -266,9 +246,7 @@ export const appSlice = createSlice({
 
       // Cretion of subtasks
       const newSubtasks: SubTaskType[] = action.payload.subtasks.map((el) => {
-        const checkComplete = currentTask?.subtasks.find(
-          (s) => s.title === el.title
-        );
+        const checkComplete = currentTask?.subtasks.find((s) => s.title === el.title);
         let complete: boolean = false;
         if (checkComplete) complete = checkComplete.isCompleted;
         return { isCompleted: complete, title: el.title };
@@ -278,7 +256,7 @@ export const appSlice = createSlice({
       if (currentColumn?.name !== action.payload.status) {
         const copiedTask = { ...currentTask! };
         currentColumn!.tasks = currentColumn!.tasks.filter(
-          (el) => el.id !== action.payload.id
+          (el) => el.id !== action.payload.id,
         );
         currentDestColumn!.tasks = [...currentDestColumn!.tasks, copiedTask];
       }

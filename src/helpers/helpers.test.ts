@@ -1,9 +1,5 @@
-import {
-  AddFieldColumns,
-  AddFieldSubtasks,
-  getOptions,
-  nameToVal,
-} from "./helpers";
+import { describe, expect, it } from "vitest";
+import { AddFieldColumns, AddFieldSubtasks, getOptions, nameToVal } from "./helpers";
 
 describe("Helpers", () => {
   it("nameToVal - turning name to value", () => {
@@ -21,7 +17,7 @@ describe("Helpers", () => {
           slug: "board",
         },
       ],
-      1
+      1,
     );
     expect(result[0]).toHaveProperty("label");
     expect(result[0]).toHaveProperty("value");

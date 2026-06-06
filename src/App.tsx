@@ -1,21 +1,21 @@
-import { useEffect } from "react"
-import { Route, Routes } from "react-router-dom"
-import Sidebar from "./components/Sidebar/Sidebar"
-import { useAppDispatch } from "./store/hooks"
-import { setBoards, setTheme } from "./store/appSlice"
-import BoardPage from "./pages/BoardPage"
-import Home from "./pages/Home"
+import { useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import Sidebar from "./components/Sidebar/Sidebar";
+import { useAppDispatch } from "./store/hooks";
+import { setBoards, setTheme } from "./store/appSlice";
+import BoardPage from "./pages/BoardPage";
+import Home from "./pages/Home";
 
 function App() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setBoards())
-    const LCTheme = !!localStorage.getItem('theme')
+    dispatch(setBoards());
+    const LCTheme = !!localStorage.getItem("theme");
     if (LCTheme) {
-      dispatch(setTheme(true))
+      dispatch(setTheme(true));
     }
-  }, [])
+  }, [dispatch]);
 
   return (
     <div className="app">
@@ -27,11 +27,18 @@ function App() {
         </Routes>
       </div>
       <div className="creditbox">
-        Challenge by <b>Frontend Mentor</b>.
-        Coded by <a href="https://www.frontendmentor.io/profile/K-ost/" aria-label="Author" target="_blank"><b>K-ost</b></a>.
+        Challenge by <b>Frontend Mentor</b>. Coded by{" "}
+        <a
+          href="https://www.frontendmentor.io/profile/K-ost/"
+          aria-label="Author"
+          target="_blank"
+        >
+          <b>K-ost</b>
+        </a>
+        .
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
